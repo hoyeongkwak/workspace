@@ -3,3 +3,4 @@ nm
 coredmp
 readelf
 strings
+testline@@@@@@
