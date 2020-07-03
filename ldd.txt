@@ -1,0 +1,5 @@
+ldd
+nm
+coredmp
+readelf
+strings
