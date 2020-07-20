@@ -57,5 +57,40 @@ namespace MyExcel{
 			
 			~NumStack();
 	};
+	class Cell {
+       protected:
+           int x, y;
+           Table* table;
+  
+           string data;
+  
+       public:
+           virtual string stringify();
+           virtual int to_numeric();
+  
+           Cell(string data, int x, int y, Table* table);
+   };
+	class Table {
+		protected:
+			int max_row_size, max_col_size;
+			Cell*** data_table;
+			
+		public:
+			Table(int max_row_size, int max_col_size);
+			~Table();
+
+			void reg_cell(Cell* c, int row, int col);
+			
+			//select cell value return
+			int to_numberic(const string& s);
+			
+			// select row and col number return
+			int to_numberic(int row, int col);
+
+			string stringify(const string& s);
+			string stringify(int row, int col);
+
+			virtual string print_table() = 0;
+	};
 }
 #endif
