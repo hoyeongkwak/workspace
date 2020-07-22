@@ -1,12 +1,17 @@
-#include "utils.h"
+#include <iostream>
+#include "ex1_utils.h"
+
 
 namespace MyExcel{
+	
 	Vector::Vector(int n) : data(new string[n]), capacity(n), length(0) {}
 
 	void Vector::push_back(string s){
-		if(capacity <= length) {
+		if(capacity <= length) 
+		{
 			string* temp = new string[capacity * 2];
-			for(int i = 0 ; i < legnth; i ++){
+			for(int i = 0 ; i < length; i ++)
+			{
 				temp[i] = data[i];
 			}
 			delete[] data;
@@ -20,7 +25,8 @@ namespace MyExcel{
 	string Vector::operator[](int i) { return data[i]; }
 	
 	void Vector::remove(int x){
-		for(int i = x + 1; i < length; i++){
+		for(int i = x + 1; i < length; i++)
+		{
 			data[i - 1] = data[i];
 		}
 		length--;		
@@ -28,17 +34,19 @@ namespace MyExcel{
 	int Vector::size() { return length; }
 	
 	Vector::~Vector(){
-		if(data){
+		if(data)
+		{
 			delete[] data;
 		}
 	}
+	
 	Stack::Stack() : start(NULL, "") { current = &start; }
 	void Stack::push(string s){
 		Node* n = new Node(current, s);
 		current = n;
 	}
 	
-	void Stack::pop(){
+	string Stack::pop(){
 		if(current == &start) return "";
 		
 		string s = current->s;
@@ -46,26 +54,27 @@ namespace MyExcel{
 		current = current->prev;
 		
 		delete prev;
-		return n;
+		return s;
 	}
 	
-	void Stack::peek() { return current->s; }	
+	string Stack::peek() { return current->s; }	
 	bool Stack::is_empty(){
 		if(current == &start) return true;
-		return flase;
+		return false;
 	}
 	
 	Stack::~Stack(){
-		while(current != &start){
+		while(current != &start)
+		{
 			Node* prev = current;
 			current = current->prev;
 			delete prev;
 		}
 	}
 	NumStack::NumStack() : start(NULL, 0) { current = &start; }
-	void NumStack::push(double e) {
+	void NumStack::push(double s) {
 		Node* n = new Node(current, s);
-		current = b;
+		current = n;
 	}
 	double NumStack::pop(){
 		if(current == &start) return 0;
@@ -78,20 +87,21 @@ namespace MyExcel{
 		return s;
 	}
 	double NumStack::peak() {return current->s;}
-	bool NumStack:is_empty() {
+	bool NumStack::is_empty() {
 		if(current == &start) 
 			return true;
 		return false;
 	}
 	NumStack::~NumStack(){
-		while(current != &start){
+		while(current != &start)
+		{
 			Node* prev = current;
 			current = current->prev;
 			delete prev;
 		}
 	}
 	Cell::Cell(string data, int x, int y, Table* table)
-		: data(data), x(X), y(y), table(table) {}
+		: data(data), x(x), y(y), table(table) {}
 	string Cell::stringify() {return data;}
 	int Cell::to_numeric() {return 0;}
 
@@ -108,7 +118,7 @@ namespace MyExcel{
 				}
 			}
 	}
-	Table:~Table()
+	Table::~Table()
 	{
 		for(int i = 0; i < max_row_size; i++)
 		{
@@ -124,7 +134,7 @@ namespace MyExcel{
 		}
 		delete[] data_table;
 	}
-	void Table:reg_cell(Cell* c, int row, int col)
+	void Table::reg_cell(Cell* c, int row, int col)
 	{
 		if(!(row < max_row_size && col < max_col_size))
 			return;
@@ -150,7 +160,7 @@ namespace MyExcel{
 	}
 	int Table::to_numeric(int row, int col)
 	{
-		if(row < max_row_size && col < max_col_size && data_table[row][col]
+		if(row < max_row_size && col < max_col_size && data_table[row][col])
 		{
 			return data_table[row][col]->to_numeric();
 		}
@@ -181,6 +191,102 @@ namespace MyExcel{
 	std::ostream& operator<<(std::ostream& o, Table& table)
 	{
 		o << table.print_table();
-		return 0;
+		return o;
 	}
-}
+	
+	TxtTable::TxtTable(int row, int col) : Table(row, col) {}
+	
+	string TxtTable::print_table() 
+	{
+		string total_table;
+		
+		int* col_max_wide = new int[max_col_size];
+		for(int i = 0; i < max_col_size; i++)
+		{
+			unsigned int max_wide = 2;
+			for(int j = 0; j < max_row_size; j++)
+			{
+				if(data_table[j][i] && data_table[j][i]->stringify().length() > max_wide)
+				{
+					max_wide = data_table[j][i]->stringify().length();
+				}
+			}
+			col_max_wide[i] = max_wide;
+		}
+		total_table += "  ";
+		int total_wide = 4;
+		for(int i = 0; i < max_col_size; i++)
+		{
+			if(col_max_wide[i])
+			{
+				int max_len = max(2, col_max_wide[i]);
+				total_table += " | " + col_num_to_str(i);
+				total_table += repeat_char(max_len - col_num_to_str(i).length(), ' ');
+				total_wide += (max_len + 3);
+			}
+		}
+		
+		total_table += "\n";
+		
+		for (int i = 0; i < max_row_size; i++) {
+			total_table += repeat_char(total_wide, '-');
+			total_table += "\n" + to_string(i + 1);
+			total_table += repeat_char(4 - to_string(i + 1).length(), ' ');
+
+			for (int j = 0; j < max_col_size; j++) {
+			  if (col_max_wide[j]) {
+				int max_len = max(2, col_max_wide[j]);
+
+				string s = "";
+				if (data_table[i][j]) {
+				  s = data_table[i][j]->stringify();
+				}
+				total_table += " | " + s;
+				total_table += repeat_char(max_len - s.length(), ' ');
+			  }
+			}
+			total_table += "\n";
+		}
+		return total_table;
+	}
+		
+	string TxtTable::repeat_char(int n, char c)
+	{
+		string s = "";
+		for(int i = 0; i < n; i++)
+			s.push_back(c);
+		return s;
+	}
+	
+	string TxtTable::col_num_to_str(int n)
+	{
+		string s = "";
+		if(n < 26)
+		{
+			s.push_back('A' + n);
+		}
+		else
+		{
+			char first = 'A' + n / 26 - 1;
+			char second = 'A' + n % 26;
+			
+			s.push_back(first);
+			s.push_back(second);
+		}
+		return s;
+	}
+	int main()
+	{
+		
+		MyExcel::TxtTable table(5, 5);
+		std::ofstream out("test.txt");
+
+		table.reg_cell(new Cell("Hello~", 0, 0, &table), 0, 0);
+		table.reg_cell(new Cell("C++", 0, 1, &table), 0, 1);
+
+		table.reg_cell(new Cell("Programming", 1, 1, &table), 1, 1);
+		
+		std::cout << std::endl << table;
+		out << table;
+	}
+}	
