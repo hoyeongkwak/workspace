@@ -1,5 +1,1 @@
-moodoo c++
-nice
-study
-very
-good
+Name :: LeeJaeBum / Age :: 60
