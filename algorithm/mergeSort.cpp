@@ -1,3 +1,7 @@
+/*
+ MergeSort는 quickSort보다 더 빠른것은 아니지만, O(N*logN)의 시간복잡도를 보장해준다(최악일때에도)
+ 하지만 기존의 데이터를 담을 추가적인 배열 공간이 필요하다는 점에서 메모리 활용이 비효율적이다
+*/
 #include <stdio.h>
 const int number = 8;
 
