@@ -1,0 +1,47 @@
+임시 객체
+-이름이 없고 생성 직후 곧바로 소멸하여 생성을 막을 수는 없다.
+-함수의 반환 형식이 클래스인 경우에만 발생한다.
+-내부 연산이 최소화되도록 코드를 최대한 줄이는 방법으로 대응해야 한다.
+
+a = testFunc(10)
+-위와 같은 형태에서 testFunc() 함수를 반환하면서 임시 객체가 생서오디고 대입 연산이 끝나면서 소멸된다.
+-이름 없는 임시 객체의 원본은 임시 객체의 복사 생성이 끝난 후 소멸 
+
+임새 객체를 유지하려면 별명을 부여하면 된다.
+CTestData &rData = testFunc(1);
+해당 임시 객체는 main함수가 종료된 후에 소멸된다.
+
+r-Value
+-연사에 따라 생선된 임시 객체
+-단순 대입 연산자의 오른쪽 항
+-c++11에서 r-value에 대한 참조자가 새롭게 제공 &&
+-int자료형의 참조는 int &, r-value는 int&&
+
+Callable
+호출 할 수 있는 모든것을 의미한다
+c++에서는 ()를 붙여서 호출할 수 있는 모든 것 
+ex) auto f = [](int a, int b){ std::cout << "a + b = " << a + b << std::end;}
+
+function
+함수 뿐아니라 모든 callable들을 보관할 수 있는 객체 
+
+int some_func1(const std::string& a){
+	std:: cout << "func1" << a << std::endl;
+	return 0;
+}
+
+struct S{
+	void operator()(char c) {std::cout << "Func2" << c << std::endl};
+};
+
+int main(){
+	std::function<int(const std::string&)> f1 = some_func1;
+	std::function<void(char)> f2 = S();
+	std::function<void()> f3 = []() {std::cout << "Func3" << std::endl;}
+
+	f1("hello");
+	f2('c');
+	f3();
+}
+
+
