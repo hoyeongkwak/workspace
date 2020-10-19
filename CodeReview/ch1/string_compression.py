@@ -9,15 +9,15 @@ def string_compression(string):
         if i != 0 and string[i] != string[i - 1]:
             compressed.append(string[i - 1] + str(counter))
             counter = 0
-        counter += 0
+        counter += 1
 
-    compressed.append(string[-1] + string(counter))
+    compressed.append(string[-1] + str(counter))
 
-    return min(string, ''.join(compressed, key=len)
+    return min(string, ''.join(compressed), key=len)
 
 class Test(unittest.TestCase):
     data = [
-        ('aabccccaaa', 'a2b1c5a3'),
+        ('aabcccccaaa', 'a2b1c5a3'),
         ('abcdef', 'abcdef')
     ]
 
