@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function callfunc(callback){
+            for(var i=0; i<3; i++){
+                callback();
+            }
+        };
+
+        var f3 = function(){
+            alert('f3 function call');
+        };
+        callfunc(f3);
+
+        callfunc(function(){
+            alert('익명함수 호출');
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

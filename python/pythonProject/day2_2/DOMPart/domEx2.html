@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        window.onload = function(){
+            var headers = document.querySelectorAll('h1');
+
+            for(var i=0; i<headers.length; i++){
+                var h1 = headers[i];
+                h1.style.color = 'orange';
+                h1.style.background = 'red';
+                h1.innerHTML = 'Input Value';
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <h1>Header</h1>
+    <h1>Header</h1>
+    <h1>Header</h1>
+</body>
+</html>
