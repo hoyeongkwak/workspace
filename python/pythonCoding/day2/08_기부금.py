@@ -1,10 +1,17 @@
+'''
+4
+120 110 140 150
+485
+
+127
+'''
 import sys
 
 def input_data():
     readl = sys.stdin.readline
-    N, M = map(int, readl().split())
-    insentive = list(map(int, readl().split()))
-    return N, M, insentive
+    N,  M = map(int,  readl().split())
+    insentive = list(map(int,  readl().split()))
+    return N,  M,  insentive
 
 
 def Check(limit):
