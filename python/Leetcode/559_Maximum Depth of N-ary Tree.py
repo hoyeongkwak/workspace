@@ -12,7 +12,7 @@ Input: root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,1
 Output: 5
 '''
 
-from collections
+from collections import deque
 # Definition for a Node.
 class Node:
     def __init__(self, val=None, children=None):
@@ -23,7 +23,8 @@ class Solution:
     def maxDepth(self, root: 'Node') -> int:
         if not root:
             return
-        queue = collections.deque()
+        #queue = collections.deque()
+        queue = deque()
         depth = 1
         queue.append((root, depth))
         while queue:
