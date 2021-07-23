@@ -1,10 +1,53 @@
 '''
 https://gglifer-cs.tistory.com/41
 https://hibee.tistory.com/205
+
+l     ll       ll         l             l
+l      l       l         ll             ll
+l
 '''
-matrix = [['x','x','.','x'],['.','x','.','x'],['x','x','.','x'],['x','x','.','x']]
+#matrix = [['x','x','.','x'],['.','x','.','x'],['x','x','.','x'],['x','x','.','x']]
+import collections
+matrix = [['.', '.', '.', '.'],['x','x','.','x'],['x','.','.','x'],['x','x','.','.'],['x','x','.','.']]
 row = len(matrix)
 col = len(matrix[0])
+v = collections.deque()
+ans = 0
+shape = [[0,0],[0,1],[1,1]]
+
+def dfs(r, c, cnt):
+    global ans
+    global v
+    if cnt == 3:
+        flag = True
+        for i in range(len(v)):
+            x = v[i][0]
+            y = v[i][1]
+            if is_ok(x,y):
+                print(x,y)
+                flag = False
+                break
+
+
+
+        if flag == True:
+            ans+= 1
+
+        return
+    nx = r + shape[cnt][0]
+    ny = c + shape[cnt][1]
+
+    if nx < 0 or ny < 0 or nx >= row or ny >= col:
+        return
+    if matrix[nx][ny] == 'x':
+        return
+    v.appendleft(([nx,ny]))
+    matrix[nx][ny] = '-'
+    dfs(r,c, cnt+1)
+    #matrix[nx][ny] = '.'
+    v.pop()
+    return
+
 def checkClear():
     newList = ['.','.','.','.']
     for n in matrix[:]:
@@ -12,10 +55,16 @@ def checkClear():
             matrix.remove(n)
             matrix.insert(0,newList)
 def is_ok(x, y):
-    for i in range(x, row):
-        if matrix[i][y] == 'x' or x == row - 1:
+    for i in range(0, x):
+        if matrix[i][y] == 'x':
             return False
+    if matrix[x][y] == 'x' or matrix[x][y-1] == 'x' or x == row - 1:
+        return False
     return True
+
+for i in range(row):
+    for j in range(col):
+        dfs(i, j, 0)
 '''
     if x == row - 1 and y == col - 1:
         return False
@@ -23,9 +72,7 @@ def is_ok(x, y):
         return False
 '''
 
-
-
-def shape2():
+'''
     for c in range(col):
         for r in range(row):
             if matrix[r][c] == '.' and r < row -1 and 0 < c < col:
@@ -33,7 +80,7 @@ def shape2():
                     matrix[r][c] = 'x'
                     matrix[r+1][c] = 'x'
                     matrix[r][c-1] = 'x'
-
+'''
 def shape1():
     for c in range(col):
         ret = 0
@@ -47,9 +94,6 @@ def shape1():
                         matrix[r-2][c] = 'x'
                         ret = 0
 #shape1()
-shape2()
+#shape2()
 #checkClear()
 print(matrix)
-
-
-
