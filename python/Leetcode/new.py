@@ -24,14 +24,16 @@ def dfs(r, c, cnt):
             x = v[i][0]
             y = v[i][1]
             if is_ok(x,y):
-                print(x,y)
                 flag = False
                 break
+        if flag == False:
+            for i in range(len(v)):
+                x = v[i][0]
+                y = v[i][1]
+                matrix[x][y] = 'x'
 
-
-
-        if flag == True:
-            ans+= 1
+        #if flag == True:
+        #    ans+= 1
 
         return
     nx = r + shape[cnt][0]
@@ -42,11 +44,19 @@ def dfs(r, c, cnt):
     if matrix[nx][ny] == 'x':
         return
     v.appendleft(([nx,ny]))
-    matrix[nx][ny] = '-'
+    #matrix[nx][ny] = '-'
     dfs(r,c, cnt+1)
     #matrix[nx][ny] = '.'
     v.pop()
     return
+
+def is_ok(x, y):
+    for i in range(0, x):
+        if matrix[i][y] == 'x':
+            return False
+    if matrix[x][y] == 'x' or x == row - 1:
+        return False
+    return True
 
 def checkClear():
     newList = ['.','.','.','.']
@@ -54,13 +64,10 @@ def checkClear():
         if n.count('x') == 4:
             matrix.remove(n)
             matrix.insert(0,newList)
-def is_ok(x, y):
-    for i in range(0, x):
-        if matrix[i][y] == 'x':
-            return False
-    if matrix[x][y] == 'x' or matrix[x][y-1] == 'x' or x == row - 1:
-        return False
-    return True
+
+    for n in range(row):
+        for m in range(col):
+            print(n,m)
 
 for i in range(row):
     for j in range(col):
@@ -96,4 +103,9 @@ def shape1():
 #shape1()
 #shape2()
 #checkClear()
-print(matrix)
+#for i in range(len(matrix)):
+#    print(matrix[i])
+checkClear()
+#print("========================")
+#for i in range(len(matrix)):
+#    print(matrix[i])
